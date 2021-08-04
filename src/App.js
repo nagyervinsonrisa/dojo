@@ -1,59 +1,62 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import emojiList from './emojiList.json';
 
-class App extends Component {
-	constructor(props) {
-		super(props);
+const App = () => {
+	/**
+	 * Initialize state variables
+	 */
+	const [filteredList, setFilteredList] = useState(emojiList)
 
-		this.state = { searchText: '', filteredEmojies: this.filterEmojies() };
+	/**
+	 * Handle change on search keyword input
+	 * event.target.value
+	 */
+	const handleOnChange = event => {
+		// Handle on input change, get entered value
+		// Call filter method here
 	}
 
-	filterEmojies(searchText = '', maxResults = '100') {
-		return emojiList
-			.filter(emoji => {
-				if (emoji.title.toLowerCase().includes(searchText.toLowerCase())) {
-					return true;
-				}
-				if (emoji.keywords.includes(searchText)) {
-					return true;
-				}
-				return false;
-			})
-			.slice(0, maxResults);
-  }
-  
-  onSearchChange(event) {
-    var result = this.filterEmojies(event.target.value);
-    this.setState({filteredEmojies: result});
-  }
+	/**
+	 * Filter emoji object array by keyword
+ 	 */
+	const filterEmoji = () => {
+		// Filter object emoji array here
+		// Set the filtered result setFilteredList(list)
+	}
 
-	render() {
-		return (
-			<div className="App">
-				<header className="component-header">Emoji Search</header>
-				<div className="component-search-input">
-					<div>
-						<input onChange={(text) => this.onSearchChange(text)} />
-					</div>
-				</div>
+	/**
+	 * Render filtered list
+	 */
+	const renderEmojiList = () => {
+		if (!Object.keys(filteredList)) return <></>;
+		return filteredList.map(emojiData =>
+			<div key={emojiData.title} className="component-emoji-result-row"  data-clipboard-text={emojiData.symbol}>
+				<span>
+					<span className="title">{emojiData.symbol}</span>
+					<span className="title">{emojiData.title}</span>
+				</span>
+				<span className="title">{emojiData.keywords}</span>
+			</div>
+		)
+	}
 
-				<div className="component-emoji-results">
-					{this.state.filteredEmojies.map(emojiData => {
-						return (
-							<div
-								className="component-emoji-result-row"
-								data-clipboard-text={this.props.symbol}
-							>
-								<span className="title">{emojiData.symbol}</span>
-								<span className="title">{emojiData.title}</span>
-							</div>
-						);
-					})}
+	/**
+	 * Render component
+	 */
+	return (
+		<div>
+			<header className="component-header">Emoji Search</header>
+			<div className="component-search-input">
+				<div>
+					<input onChange={handleOnChange} />
 				</div>
 			</div>
-		);
-	}
+			<div className="component-emoji-results">
+				{renderEmojiList()}
+			</div>
+		</div>
+	);
 }
 
-export default App;
+export  default App;
